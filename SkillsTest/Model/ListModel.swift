@@ -16,4 +16,6 @@ struct ListModel {
     let description:String
     let temp:Double
     let date:Double
+    let maxTemp:Double
+    let minTemp:Double
 }

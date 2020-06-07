@@ -46,6 +46,8 @@ class DatabaseHelper: NSObject {
                 cityInfo.des = list.description
                 cityInfo.temp = list.temp
                 cityInfo.dt = list.date
+                cityInfo.maxTemp = list.maxTemp
+                cityInfo.minTemp = list.minTemp
             }
             else{
                 // Insert record
@@ -56,6 +58,8 @@ class DatabaseHelper: NSObject {
                 city.des = list.description
                 city.temp = list.temp
                 city.dt = list.date
+                city.maxTemp = list.maxTemp
+                city.minTemp = list.minTemp
             }
         }
         catch {

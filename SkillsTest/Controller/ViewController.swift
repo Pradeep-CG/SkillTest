@@ -71,10 +71,12 @@ class ViewController: UIViewController{
             let lon = weatherResponse.coord.lon
             let description = weatherResponse.weather[0].weatherDescription
             let temp = weatherResponse.main.temp
+            let mxTemp = weatherResponse.main.tempMax
+            let minTemp = weatherResponse.main.tempMin
             let dt = Double(weatherResponse.dt)
             
             // Save city details into CityInfo Entity
-            DatabaseHelper.sharedInstance.saveCityData(list: ListModel(name: name, lat: lat, lon: lon, description: description, temp: temp, date: dt)) { (cityName) in
+            DatabaseHelper.sharedInstance.saveCityData(list: ListModel(name: name, lat: lat, lon: lon, description: description, temp: temp, date: dt, maxTemp: mxTemp, minTemp: minTemp)) { (cityName) in
                 // Save city name into City Entity
                 if cityName.count > 1{
                     
@@ -143,6 +145,11 @@ extension ViewController: UITableViewDataSource, UITableViewDelegate{
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+        let weatherVC = self.storyboard?.instantiateViewController(identifier: "weatherVC") as! WeatherViewController
+        weatherVC.selectedIndex = indexPath.row
+        weatherVC.cityInfoArr = self.tableArr
+        self.navigationController?.pushViewController(weatherVC, animated: true)
     }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -199,4 +206,12 @@ extension ViewController: GMSAutocompleteViewControllerDelegate {
         dismiss(animated: true, completion: nil)
     }
     
+}
+extension Date {
+    func dayOfWeek() -> String? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "EEEE"
+        return dateFormatter.string(from: self).capitalized
+        // or use capitalized(with: locale) if you want
+    }
 }
